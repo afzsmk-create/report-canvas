@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ТЕХНИЧЕСКИЙ ОТЧЕТ №163: Модернизация участка окраски ХЦП</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js для интерактивных графиков -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19; /* Сверхтемный синий */
+            color: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        .glow-card {
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.02);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glow-card:hover {
+            box-shadow: 0 0 35px rgba(56, 189, 248, 0.08);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="min-h-screen custom-scrollbar selection:bg-sky-500 selection:text-white pb-12">
+
+    <!-- Шапка отчета -->
+    <header class="border-b border-slate-800/80 bg-slate-900/40 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <div class="bg-gradient-to-tr from-sky-500 to-indigo-600 p-2.5 rounded-xl text-white shadow-xl">
+                    <i class="fa-solid fa-layer-group text-2xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white">
+                            ЗСМК • Модернизация ХЦП
+                        </h1>
+                        <span class="px-2.5 py-0.5 bg-sky-500/10 text-sky-400 text-xs font-bold rounded-full border border-sky-500/20">ОТЧЕТ №163</span>
+                    </div>
+                    <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Разработчик: Главный технолог Фадеев А.Ю.</p>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-3 text-sm text-slate-400">
+                <span class="px-3 py-1.5 bg-slate-900/80 rounded-lg border border-slate-800 font-mono">Статус: К внедрению</span>
+                <span class="px-3 py-1.5 bg-slate-900/80 rounded-lg border border-slate-800 font-mono">01.06.2026 г.</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <!-- Верхняя аналитическая панель -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Блок ключевых вводных -->
+            <div class="lg:col-span-2 relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 p-6 sm:p-8 flex flex-col justify-between">
+                <div class="absolute top-0 right-0 -mt-12 -mr-12 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="space-y-4">
+                    <div class="flex flex-wrap gap-2">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/15">
+                            <i class="fa-solid fa-microchip mr-1.5"></i> Интерактивный канвас
+                        </span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/15">
+                            <i class="fa-solid fa-shield mr-1.5"></i> Без соавторов
+                        </span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
+                        Модернизация участка окрашивания ХЦП для тоннелей и фасадов
+                    </h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Настоящий интерактивный отчет обобщает результаты испытаний эмали <strong class="text-sky-300">«НОВАКС 13524М»</strong> и растворителя <strong class="text-emerald-300">«НОВАКСОЛ 302»</strong>. На основе проведенных натурных тестов станка <strong class="text-indigo-400">KAMA KR BM 1700</strong> сформирована гибкая стратегия быстрого старта с переходом к УФ-технологии.
+                    </p>
+                </div>
+                <div class="mt-6 pt-6 border-t border-slate-800/60 flex flex-wrap gap-4 items-center justify-between text-xs sm:text-sm text-slate-400">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-user-tie text-sky-400"></i>
+                        <span class="font-semibold text-white">Разработчик: Фадеев А.Ю.</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="scrollToElement('problem-diagnostic')" class="hover:text-white text-sky-400 transition font-medium">Диагностика</button>
+                        <span class="text-slate-700">•</span>
+                        <button onclick="scrollToElement('comparison-section')" class="hover:text-white text-sky-400 transition font-medium">Оборудование</button>
+                        <span class="text-slate-700">•</span>
+                        <button onclick="scrollToElement('matrix-section')" class="hover:text-white text-sky-400 transition font-medium">Техпроцесс</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Экспресс-сводка CAPEX -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
+                        <i class="fa-solid fa-coins text-amber-500 mr-2"></i>Сравнение затрат (CAPEX)
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Cefla -->
+                        <div class="p-4 bg-slate-950/60 rounded-xl border border-slate-800">
+                            <div class="flex justify-between items-center text-xs sm:text-sm text-slate-400 mb-1">
+                                <span>Cefla ROC TRE W (б/у + допы)</span>
+                                <span class="font-bold text-rose-400">Очень дорого</span>
+                            </div>
+                            <div class="text-2xl font-black text-white">18 000 000 ₽</div>
+                        </div>
+                        
+                        <!-- KAMA -->
+                        <div class="p-4 bg-emerald-500/5 rounded-xl border border-emerald-500/20">
+                            <div class="flex justify-between items-center text-xs sm:text-sm text-slate-400 mb-1">
+                                <span>KAMA KR BM 1700 (б/у ориентир)</span>
+                                <span class="font-bold text-emerald-400">Экономия 77%</span>
+                            </div>
+                            <div class="text-3xl font-black text-emerald-400">4 200 000 ₽</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-xs text-slate-500 mt-4 leading-relaxed">
+                    *В цене Cefla учтены все опции и капитальный ремонт. KAMA предлагается по оптимальной рыночной цене с высокой ликвидностью в РФ.
+                </div>
+            </div>
+        </div>
+
+        <!-- 1. Диагностика проблем запуска -->
+        <section id="problem-diagnostic" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                    <span class="text-sky-400">1.</span> Ключевые проблемы текущей линии и результаты тестов
+                </h3>
+                <p class="text-sm text-slate-400">Выявленные дефекты в ходе лабораторных испытаний и выездных тестов</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Вальцы -->
+                <div class="bg-slate-950/40 border border-rose-500/10 rounded-xl p-5 space-y-3 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-1.5 h-full bg-rose-500/60"></div>
+                    <div class="w-10 h-10 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400">
+                        <i class="fa-solid fa-gears text-lg"></i>
+                    </div>
+                    <h4 class="font-bold text-base text-white">Набухание вальцов от химии</h4>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Растворитель <strong class="text-rose-400">«НОВАКСОЛ 302»</strong> вызывает быстрое набухание и деформацию покрытия валов. Новые тестируемые марки полиуретановой резины <strong class="text-white">ЭП-40</strong> и <strong class="text-white">ЭП-50</strong> увеличиваются в объеме до 2 раз за 12 часов. Равномерный нанос грунта невозможен.
+                    </p>
+                </div>
+
+                <!-- Лаконалив -->
+                <div class="bg-slate-950/40 border border-rose-500/10 rounded-xl p-5 space-y-3 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-1.5 h-full bg-rose-500/60"></div>
+                    <div class="w-10 h-10 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400">
+                        <i class="fa-solid fa-soap text-lg"></i>
+                    </div>
+                    <h4 class="font-bold text-base text-white">Вскипание эмали при наливе</h4>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Полиуретановая эмаль <strong class="text-rose-400">«НОВАКС 13524М»</strong> в узле лаконалива пенится. Микропузыри воздуха разрывают лаковую шторку, что ведет к образованию кратеров на лицевой стороне ХЦП. Тестирование лаконалива <strong class="text-white">Sorbini</strong> проблему не решило.
+                    </p>
+                </div>
+
+                <!-- Торцы -->
+                <div class="bg-slate-950/40 border border-amber-500/10 rounded-xl p-5 space-y-3 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-1.5 h-full bg-amber-500/60"></div>
+                    <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400">
+                        <i class="fa-solid fa-border-none text-lg"></i>
+                    </div>
+                    <h4 class="font-bold text-base text-white">Невозможность укрытия торцов</h4>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Традиционные вальцы и лаконалив физически окрашивают только пласть. Для укрытия всех четырех торцов (критическое требование для фасадных панелей) требуется выделять отдельный пост ручного окрашивания, что удорожает процесс.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Результат выездных испытаний -->
+            <div class="p-5 bg-emerald-500/5 border border-emerald-500/20 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <span class="text-sm font-bold text-emerald-400 flex items-center gap-1.5 uppercase tracking-wider">
+                        <i class="fa-solid fa-circle-check"></i> Вывод выездных испытаний на станке KAMA
+                    </span>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Проведенный запуск ПУ-эмали на станке <strong>KAMA KR BM 1700</strong> методом распыления показал отличный качественный результат. <strong>Пузыри и пена отсутствуют полностью</strong>. Напыление факелом под углом прокрашивает и пласть, и торцы за один проход.
+                    </p>
+                </div>
+                <button onclick="scrollToElement('matrix-section')" class="shrink-0 text-sm font-bold text-emerald-400 hover:text-emerald-300 transition flex items-center gap-1 bg-emerald-500/10 px-4 py-2 rounded-lg border border-emerald-500/20">
+                    Решения <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. Сравнительный анализ распылительного оборудования -->
+        <section id="comparison-section" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                    <span class="text-sky-400">2.</span> Сравнение характеристик автоматических кабин
+                </h3>
+                <p class="text-sm text-slate-400">Сравнение итальянской премиум-установки после капитального ремонта и турецкой машины 2019 года выпуска</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                <!-- Интерактивная анатомия станка (SVG) -->
+                <div class="lg:col-span-6 bg-slate-950 rounded-xl p-4 border border-slate-800/80 relative flex flex-col justify-between min-h-[350px]">
+                    <div class="text-xs font-bold text-slate-500 uppercase text-center mb-2">Нажмите на узлы для детального сравнения:</div>
+                    <svg viewBox="0 0 800 400" class="w-full h-auto max-w-xl mx-auto text-slate-600" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <!-- Конвейерная линия -->
+                        <line x1="50" y1="280" x2="750" y2="280" stroke-dasharray="5 5" />
+                        <line x1="50" y1="290" x2="750" y2="290" />
+                        
+                        <!-- Корпус автоматической кабины -->
+                        <rect x="250" y="80" width="300" height="210" rx="10" fill="#1e293b" fill-opacity="0.2" stroke="#475569" stroke-width="2" />
+                        <!-- Колпак вытяжки/притока -->
+                        <path d="M 280 80 L 330 35 L 470 35 L 520 80 Z" fill="#334155" fill-opacity="0.4" stroke="#475569" />
+                        
+                        <!-- Рольганги входа и выхода -->
+                        <rect x="70" y="260" width="180" height="20" rx="3" fill="#1e293b" stroke="#334155" />
+                        <rect x="550" y="260" width="180" height="20" rx="3" fill="#1e293b" stroke="#334155" />
+
+                        <!-- Каретки распылителей -->
+                        <line x1="310" y1="130" x2="490" y2="130" stroke="#64748b" stroke-width="3" />
+                        
+                        <!-- Левая каретка -->
+                        <g transform="translate(330, 115)">
+                            <rect x="0" y="0" width="50" height="25" rx="3" fill="#475569" />
+                            <path d="M 12 25 L 5 45 M 38 25 L 45 45" stroke="#94a3b8" stroke-width="2" />
+                            <path d="M 5 45 L -5 70 L 15 70 Z" fill="rgba(56, 189, 248, 0.15)" stroke="rgba(56, 189, 248, 0.3)" />
+                            <path d="M 45 45 L 35 70 L 55 70 Z" fill="rgba(56, 189, 248, 0.15)" stroke="rgba(56, 189, 248, 0.3)" />
+                        </g>
+
+                        <!-- Правая каретка -->
+                        <g transform="translate(420, 115)">
+                            <rect x="0" y="0" width="50" height="25" rx="3" fill="#475569" />
+                            <path d="M 12 25 L 5 45 M 38 25 L 45 45" stroke="#94a3b8" stroke-width="2" />
+                            <path d="M 5 45 L -5 70 L 15 70 Z" fill="rgba(56, 189, 248, 0.15)" stroke="rgba(56, 189, 248, 0.3)" />
+                            <path d="M 45 45 L 35 70 L 55 70 Z" fill="rgba(56, 189, 248, 0.15)" stroke="rgba(56, 189, 248, 0.3)" />
+                        </g>
+
+                        <!-- Кнопки интерактивных хотспотов -->
+                        <!-- 1. Лазерный сканер -->
+                        <g class="cursor-pointer group" onclick="showHotspot(1)">
+                            <circle cx="230" cy="220" r="15" class="fill-slate-900 stroke-sky-400" stroke-width="2.5" />
+                            <circle cx="230" cy="220" r="8" class="fill-sky-400 group-hover:scale-125 transition-transform origin-center" />
+                            <text x="226" y="224" font-size="12" class="fill-slate-950 font-black" pointer-events="none">1</text>
+                        </g>
+
+                        <!-- 2. Пистолеты и контуры -->
+                        <g class="cursor-pointer group" onclick="showHotspot(2)">
+                            <circle cx="400" cy="130" r="15" class="fill-slate-900 stroke-sky-400" stroke-width="2.5" />
+                            <circle cx="400" cy="130" r="8" class="fill-sky-400 group-hover:scale-125 transition-transform origin-center" />
+                            <text x="396" y="134" font-size="12" class="fill-slate-950 font-black" pointer-events="none">2</text>
+                        </g>
+
+                        <!-- 3. Очистка ленты -->
+                        <g class="cursor-pointer group" onclick="showHotspot(3)">
+                            <circle cx="400" cy="315" r="15" class="fill-slate-900 stroke-sky-400" stroke-width="2.5" />
+                            <circle cx="400" cy="315" r="8" class="fill-sky-400 group-hover:scale-125 transition-transform origin-center" />
+                            <text x="396" y="319" font-size="12" class="fill-slate-950 font-black" pointer-events="none">3</text>
+                        </g>
+
+                        <!-- 4. Фильтры -->
+                        <g class="cursor-pointer group" onclick="showHotspot(4)">
+                            <circle cx="490" cy="200" r="15" class="fill-slate-900 stroke-sky-400" stroke-width="2.5" />
+                            <circle cx="490" cy="200" r="8" class="fill-sky-400 group-hover:scale-125 transition-transform origin-center" />
+                            <text x="486" y="204" font-size="12" class="fill-slate-950 font-black" pointer-events="none">4</text>
+                        </g>
+
+                        <!-- 5. КИПиА / ПЛК -->
+                        <g class="cursor-pointer group" onclick="showHotspot(5)">
+                            <circle cx="530" cy="115" r="15" class="fill-slate-900 stroke-sky-400" stroke-width="2.5" />
+                            <circle cx="530" cy="115" r="8" class="fill-sky-400 group-hover:scale-125 transition-transform origin-center" />
+                            <text x="526" y="119" font-size="12" class="fill-slate-950 font-black" pointer-events="none">5</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Боковая информационная панель -->
+                <div class="lg:col-span-6 flex flex-col justify-center">
+                    <div id="hotspot-default" class="bg-slate-950/60 rounded-xl p-6 border border-slate-800 text-center py-16 space-y-4">
+                        <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center mx-auto text-slate-400">
+                            <i class="fa-solid fa-hand-pointer text-2xl animate-pulse"></i>
+                        </div>
+                        <h4 class="font-extrabold text-white text-base">Интерактивный селектор узлов</h4>
+                        <p class="text-sm text-slate-400 max-w-sm mx-auto">
+                            Нажмите на цифры на интерактивной схеме станка, чтобы провести поузловое сравнение Cefla и KAMA.
+                        </p>
+                    </div>
+
+                    <!-- Карточка точки 1: Сканер -->
+                    <div id="hotspot-1" class="hidden bg-slate-950/80 rounded-xl p-6 border border-sky-500/20 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <h4 class="font-bold text-white text-base flex items-center gap-2">
+                                <span class="w-7 h-7 bg-sky-500/10 text-sky-400 text-sm font-bold rounded-full flex items-center justify-center">1</span>
+                                Входной сканер деталей
+                            </h4>
+                            <span class="text-xs text-slate-500 font-mono uppercase">Контур заготовки</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="bg-slate-900/60 p-4 rounded-lg border border-slate-800">
+                                <span class="text-sky-400 font-bold block mb-1">CEFLA (2007)</span>
+                                <p class="text-slate-300 leading-relaxed">Фотоэлектрическая линейка старого поколения. Умеренная точность, высокие риски износа шлейфов.</p>
+                            </div>
+                            <div class="bg-emerald-500/5 p-4 rounded-lg border border-emerald-500/10">
+                                <span class="text-emerald-400 font-bold block mb-1">KAMA (2019)</span>
+                                <p class="text-slate-300 leading-relaxed">Высокоточная лазерная система считывания контура (32 датчика Datalogic). Работает с точностью до 1 мм.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Карточка точки 2: Распыление -->
+                    <div id="hotspot-2" class="hidden bg-slate-950/80 rounded-xl p-6 border border-sky-500/20 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <h4 class="font-bold text-white text-base flex items-center gap-2">
+                                <span class="w-7 h-7 bg-sky-500/10 text-sky-400 text-sm font-bold rounded-full flex items-center justify-center">2</span>
+                                Контуры и распылители
+                            </h4>
+                            <span class="text-xs text-slate-500 font-mono uppercase">Нанесение ЛКМ</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="bg-slate-900/60 p-4 rounded-lg border border-slate-800">
+                                <span class="text-sky-400 font-bold block mb-1">CEFLA (2007)</span>
+                                <p class="text-slate-300 leading-relaxed">2 независимые каретки, схема 4+4 пистолета Kremlin. Эффективно, но высокая стоимость запчастей Kremlin.</p>
+                            </div>
+                            <div class="bg-emerald-500/5 p-4 rounded-lg border border-emerald-500/10">
+                                <span class="text-emerald-400 font-bold block mb-1">KAMA (2019)</span>
+                                <p class="text-slate-300 leading-relaxed">2 независимые каретки, схема 4+4 пистолета Binks AAA. Простая замена на распылители Wagner или Kremlin при необходимости.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Карточка точки 3: Лента и очистка -->
+                    <div id="hotspot-3" class="hidden bg-slate-950/80 rounded-xl p-6 border border-sky-500/20 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <h4 class="font-bold text-white text-base flex items-center gap-2">
+                                <span class="w-7 h-7 bg-sky-500/10 text-sky-400 text-sm font-bold rounded-full flex items-center justify-center">3</span>
+                                Транспортер и очистка
+                            </h4>
+                            <span class="text-xs text-slate-500 font-mono uppercase">Обслуживание конвейера</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="bg-slate-900/60 p-4 rounded-lg border border-slate-800">
+                                <span class="text-sky-400 font-bold block mb-1">CEFLA (2007)</span>
+                                <p class="text-slate-300 leading-relaxed">Патентованная лента CFB с рекуперацией и встречным валиком. Тонкая настройка, дорогая замена ленты в РФ.</p>
+                            </div>
+                            <div class="bg-emerald-500/5 p-4 rounded-lg border border-emerald-500/10">
+                                <span class="text-emerald-400 font-bold block mb-1">KAMA (2019)</span>
+                                <p class="text-slate-300 leading-relaxed">Полиолефиновая рабочая лента. Автоматический скребок + промывка (расход: 12 л растворителя на 8-часовую смену).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Карточка точки 4: Фильтрация -->
+                    <div id="hotspot-4" class="hidden bg-slate-950/80 rounded-xl p-6 border border-sky-500/20 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <h4 class="font-bold text-white text-base flex items-center gap-2">
+                                <span class="w-7 h-7 bg-sky-500/10 text-sky-400 text-sm font-bold rounded-full flex items-center justify-center">4</span>
+                                Системы фильтрации
+                            </h4>
+                            <span class="text-xs text-slate-500 font-mono uppercase">Очистка воздуха</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="bg-slate-900/60 p-4 rounded-lg border border-slate-800">
+                                <span class="text-sky-400 font-bold block mb-1">CEFLA (2007)</span>
+                                <p class="text-slate-300 leading-relaxed">Водяной гидрофильтр с водяной завесой и встроенным скиммером для очистки воды. Прекрасно осаждает лак.</p>
+                            </div>
+                            <div class="bg-emerald-500/5 p-4 rounded-lg border border-emerald-500/10">
+                                <span class="text-emerald-400 font-bold block mb-1">KAMA (2019)</span>
+                                <p class="text-slate-300 leading-relaxed">Сухая двухступенчатая фильтрация (лабиринты + стекловолокно). Идеальна для быстрой смены недорогих отечественных фильтров.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Карточка точки 5: Электроника -->
+                    <div id="hotspot-5" class="hidden bg-slate-950/80 rounded-xl p-6 border border-sky-500/20 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <h4 class="font-bold text-white text-base flex items-center gap-2">
+                                <span class="w-7 h-7 bg-sky-500/10 text-sky-400 text-sm font-bold rounded-full flex items-center justify-center">5</span>
+                                Панель КИПиА и Электроника
+                            </h4>
+                            <span class="text-xs text-slate-500 font-mono uppercase">Эксплуатационный риск</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div class="bg-slate-900/60 p-4 rounded-lg border border-slate-800">
+                                <span class="text-sky-400 font-bold block mb-1">CEFLA (2007)</span>
+                                <p class="text-slate-300 leading-relaxed">Старые контроллеры 2000-х годов. Почти все снято с производства в ЕС. Риск необратимого выхода из строя КИПиА.</p>
+                            </div>
+                            <div class="bg-emerald-500/5 p-4 rounded-lg border border-emerald-500/10">
+                                <span class="text-emerald-400 font-bold block mb-1">KAMA (2019)</span>
+                                <p class="text-slate-300 leading-relaxed">Современная русифицированная панель управления. Элементная база Schneider Electric / LS (Корея) поставляется свободно.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Детальная таблица сравнения -->
+            <div class="overflow-x-auto custom-scrollbar mt-6 pt-4 border-t border-slate-800">
+                <table class="w-full text-left text-sm border-collapse min-w-[700px]">
+                    <thead>
+                        <tr class="border-b border-slate-800 text-slate-400 font-mono">
+                            <th class="py-3 px-4 font-bold">Характеристика</th>
+                            <th class="py-3 px-4 font-bold text-sky-400">Cefla ROC TRE W (2007)</th>
+                            <th class="py-3 px-4 font-bold text-emerald-400">KAMA KR BM 1700 (2019)</th>
+                            <th class="py-3 px-4 font-bold text-slate-500">Технологический вывод</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/40 text-slate-300">
+                        <tr class="hover:bg-slate-900/20">
+                            <td class="py-4 px-4 font-bold text-white">Рыночная цена в РФ</td>
+                            <td class="py-4 px-4 font-extrabold text-rose-400">18 000 000 ₽ (с допами)</td>
+                            <td class="py-4 px-4 font-extrabold text-emerald-400">~ 4 200 000 ₽ (б/у ориентир)</td>
+                            <td class="py-4 px-4 text-emerald-400 font-bold">KAMA дешевле в 4.3 раза при высоком ресурсе</td>
+                        </tr>
+                        <tr class="hover:bg-slate-900/20">
+                            <td class="py-4 px-4 font-bold text-white">Состояние / Возраст</td>
+                            <td class="py-4 px-4">19 лет, пройден капитальный ремонт</td>
+                            <td class="py-4 px-4">7 лет, оптимальный рабочий возраст</td>
+                            <td class="py-4 px-4 text-slate-400">У Cefla высокая изношенность КИПиА</td>
+                        </tr>
+                        <tr class="hover:bg-slate-900/20">
+                            <td class="py-4 px-4 font-bold text-white">Скорость подачи</td>
+                            <td class="py-4 px-4">до 20 м/мин</td>
+                            <td class="py-4 px-4">до 8 м/мин</td>
+                            <td class="py-4 px-4 text-slate-400">Скорость подачи KAMA с запасом для текущей сушки ЗСМК</td>
+                        </tr>
+                        <tr class="hover:bg-slate-900/20">
+                            <td class="py-4 px-4 font-bold text-white">Запчасти и сервис</td>
+                            <td class="py-4 px-4 text-rose-400">Заблокировано поставщиками из ЕС</td>
+                            <td class="py-4 px-4 text-emerald-400">Поставки стабильно идут через Турцию</td>
+                            <td class="py-4 px-4 text-emerald-400 font-semibold">У KAMA нет рисков простоя из-за санкций</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 3. Матрица технологических вариантов изменения линии -->
+        <section id="matrix-section" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+            <div class="border-b border-slate-800 pb-4 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                <div>
+                    <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                        <span class="text-sky-400">3.</span> Матрица вариантов изменения линии
+                    </h3>
+                    <p class="text-sm text-slate-400">Выберите вариант техпроцесса для отображения схемы прохода и баланса параметров</p>
+                </div>
+                <!-- Переключатель вкладок -->
+                <div class="flex flex-wrap bg-slate-950 p-1 rounded-xl border border-slate-800 shrink-0 gap-1">
+                    <button onclick="selectVariant(1)" id="btn-var-1" class="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all bg-sky-500 text-white shadow-lg">Вариант 1 (Стартовый)</button>
+                    <button onclick="selectVariant(2)" id="btn-var-2" class="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-400 hover:text-white">Вариант 2 (Полный)</button>
+                    <button onclick="selectVariant(3)" id="btn-var-3" class="px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-400 hover:text-white">Вариант 3 (Комбинированный)</button>
+                </div>
+            </div>
+
+            <!-- Контейнеры с контентом вариантов -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Визуальное отображение схемы движения заготовки -->
+                <div class="lg:col-span-5 bg-slate-950 p-5 rounded-xl border border-slate-800 text-center space-y-4">
+                    <span class="text-xs uppercase font-bold text-slate-500 block tracking-wider">Схема прохода и нанесения по сторонам</span>
+                    
+                    <!-- Вариант 1 Схема -->
+                    <div id="diagram-var-1" class="space-y-4">
+                        <div class="flex flex-wrap items-center justify-center gap-2">
+                            <span class="px-3 py-1 bg-sky-500/10 text-sky-400 text-sm font-bold rounded-lg border border-sky-500/20">Шаг 1: Лаконалив</span>
+                            <i class="fa-solid fa-arrow-right text-slate-600"></i>
+                            <span class="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-sm font-bold rounded-lg border border-indigo-500/20">Шаг 2: Распыление</span>
+                        </div>
+                        <div class="p-4 bg-slate-900 rounded-lg space-y-2 text-sm text-left">
+                            <div class="flex justify-between border-b border-slate-800 pb-1">
+                                <span class="text-slate-400">Лицевая пласть:</span>
+                                <span class="text-white font-bold text-right">Грунт (налив) + Эмаль (распыление)</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1">
+                                <span class="text-slate-400">Торцы:</span>
+                                <span class="text-amber-400 font-bold text-right">Ручной грунт + Эмаль (распыление)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Тыльная сторона (тыл):</span>
+                                <span class="text-white font-bold text-right">Грунт (налив)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Вариант 2 Схема -->
+                    <div id="diagram-var-2" class="hidden space-y-4">
+                        <div class="flex flex-wrap items-center justify-center gap-2">
+                            <span class="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-sm font-bold rounded-lg border border-indigo-500/20">Проход 1: Распыление (Грунт)</span>
+                            <i class="fa-solid fa-arrow-right text-slate-600"></i>
+                            <span class="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-sm font-bold rounded-lg border border-indigo-500/20">Проход 2: Распыление (Эмаль)</span>
+                        </div>
+                        <div class="p-4 bg-slate-900 rounded-lg space-y-2 text-sm text-left">
+                            <div class="flex justify-between border-b border-slate-800 pb-1">
+                                <span class="text-slate-400">Лицевая пласть:</span>
+                                <span class="text-white font-bold text-right">Грунт (распыление) + Эмаль (распыление)</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1">
+                                <span class="text-slate-400">Торцы:</span>
+                                <span class="text-white font-bold text-right">Грунт (распыление) + Эмаль (распыление)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Тыльная сторона (тыл):</span>
+                                <span class="text-white font-bold text-right">Грунт (распыление)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Вариант 3 Схема -->
+                    <div id="diagram-var-3" class="hidden space-y-4">
+                        <div class="flex flex-wrap items-center justify-center gap-2">
+                            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 text-sm font-bold rounded-lg border border-emerald-500/20">Тыл: Вальцы (УФ-грунт)</span>
+                            <i class="fa-solid fa-arrow-right text-slate-600"></i>
+                            <span class="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-sm font-bold rounded-lg border border-indigo-500/20">Лицо: Распыление KAMA</span>
+                        </div>
+                        <div class="p-4 bg-slate-900 rounded-lg space-y-2 text-sm text-left">
+                            <div class="flex justify-between border-b border-slate-800 pb-1">
+                                <span class="text-slate-400">Лицевая пласть:</span>
+                                <span class="text-emerald-400 font-bold text-right">Грунт (распыление) + Эмаль (распыление)</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1">
+                                <span class="text-slate-400">Торцы:</span>
+                                <span class="text-emerald-400 font-bold text-right">Грунт (распыление) + Эмаль (распыление)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Тыльная сторона (тыл):</span>
+                                <span class="text-amber-300 font-bold text-right">УФ-грунт вальцами (сушка за 2-3 секунды!)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-xs text-slate-500 leading-relaxed text-left">
+                        *Примечание: Отказ от одновременного двустороннего грунтования вальцами увеличивает количество проходов, но является вынужденным шагом для достижения качества ЛКП.
+                    </div>
+                </div>
+
+                <!-- Текстовое описание и сравнение преимуществ/рисков -->
+                <div class="lg:col-span-7 space-y-5">
+                    <!-- Преимущества -->
+                    <div class="space-y-1.5">
+                        <h4 class="text-sm font-bold text-emerald-400 uppercase tracking-widest"><i class="fa-solid fa-square-plus mr-1"></i> Технологические преимущества</h4>
+                        <p id="var-pros-text" class="text-sm sm:text-base text-slate-300 leading-relaxed">
+                            Высокий коэффициент переноса грунта на лицевую пласть. Подтверждено, что эпоксидный грунт Novax не пенится и отлично наносится шторкой лаконалива.
+                        </p>
+                    </div>
+
+                    <!-- Риски и ограничения -->
+                    <div class="space-y-1.5">
+                        <h4 class="text-sm font-bold text-rose-400 uppercase tracking-widest"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Риски и ограничения</h4>
+                        <p id="var-cons-text" class="text-sm sm:text-base text-slate-300 leading-relaxed">
+                            Торцы остаются без грунтовочного защитного слоя (сниженная влагостойкость плиты в условиях фасада). В баке наливной машины всегда сохраняется мертвый объем ЛКМ размером 20-30 л, что усложняет промывку при малых партиях.
+                        </p>
+                    </div>
+
+                    <!-- Влияние на производительность и расход -->
+                    <div class="space-y-1.5">
+                        <h4 class="text-sm font-bold text-sky-400 uppercase tracking-widest"><i class="fa-solid fa-chart-line mr-1"></i> Влияние на производительность и расход</h4>
+                        <p id="var-perf-text" class="text-sm sm:text-base text-slate-300 leading-relaxed">
+                            Высокая скорость грунтования лицевой пласти за один проход на лаконаливной машине. Нанесение финишной ПУ-эмали в распылительной камере KAMA обеспечивает укрытие кромок, потери на опыл составляют стандартные 15–30%.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. Интерактивный калькулятор весов решений -->
+        <section class="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-6 space-y-6">
+            <div>
+                <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-sky-400"></i> Динамический калькулятор выбора (Фадеев А.Ю.)
+                </h3>
+                <p class="text-sm text-slate-400">Задайте приоритеты ваших технологических условий (сумма должна составлять 100%), чтобы алгоритм показал обоснованность закупки оборудования</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <!-- Слайдеры настройки -->
+                <div class="md:col-span-7 space-y-5">
+                    <!-- Слайдер 1 -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-sm font-semibold">
+                            <span class="text-slate-300">Логистика, запчасти и КИПиА в РФ:</span>
+                            <span id="weight-parts-label" class="text-sky-400 text-base font-bold">30%</span>
+                        </div>
+                        <input id="weight-parts" type="range" min="0" max="100" value="30" oninput="runCalculator()" class="w-full accent-sky-500 h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <!-- Слайдер 2 -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-sm font-semibold">
+                            <span class="text-slate-300">Минимальный CAPEX (Экономия бюджета):</span>
+                            <span id="weight-price-label" class="text-sky-400 text-base font-bold">35%</span>
+                        </div>
+                        <input id="weight-price" type="range" min="0" max="100" value="35" oninput="runCalculator()" class="w-full accent-sky-500 h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <!-- Слайдер 3 -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-sm font-semibold">
+                            <span class="text-slate-300">Производительность (Скорость конвейера):</span>
+                            <span id="weight-speed-label" class="text-sky-400 text-base font-bold">15%</span>
+                        </div>
+                        <input id="weight-speed" type="range" min="0" max="100" value="15" oninput="runCalculator()" class="w-full accent-sky-500 h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <!-- Слайдер 4 -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-sm font-semibold">
+                            <span class="text-slate-300">Остаточный механический ресурс:</span>
+                            <span id="weight-resource-label" class="text-sky-400 text-base font-bold">20%</span>
+                        </div>
+                        <input id="weight-resource" type="range" min="0" max="100" value="20" oninput="runCalculator()" class="w-full accent-sky-500 h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                </div>
+
+                <!-- Вывод баллов решения -->
+                <div class="md:col-span-5 bg-slate-950 p-6 rounded-xl border border-slate-800 text-center space-y-4">
+                    <span class="text-xs uppercase tracking-wider text-slate-500 font-bold block">Интегральная оценка целесообразности</span>
+                    
+                    <div class="flex items-center justify-around">
+                        <div class="space-y-1 bg-slate-900/50 p-3 rounded-lg w-full mr-2">
+                            <span class="text-xs text-rose-400 font-semibold block">Cefla ROC TRE</span>
+                            <span id="calc-score-cefla" class="text-2xl sm:text-3xl font-black text-white">41%</span>
+                        </div>
+                        <div class="space-y-1 bg-emerald-500/5 p-3 rounded-lg border border-emerald-500/10 w-full ml-2">
+                            <span class="text-xs text-emerald-400 font-semibold block">KAMA KR BM</span>
+                            <span id="calc-score-kama" class="text-3xl sm:text-4xl font-black text-emerald-400">89%</span>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-slate-900/60 rounded-lg text-sm text-left leading-relaxed text-slate-300 border border-slate-800">
+                        <strong class="text-white block mb-1">Резюме алгоритма:</strong>
+                        <span id="calc-summary-text">Установка KAMA KR BM 1700 безоговорочно побеждает за счет гигантской разницы в цене при сопоставимом механическом ресурсе.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Диаграммы и радарный анализ параметров -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- График: Радарный анализ -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 lg:col-span-8 space-y-4">
+                <div>
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-sky-400"></i> Экспертный радарный анализ параметров оборудования
+                    </h3>
+                    <p class="text-xs text-slate-400">Многофакторный сравнительный анализ технических и экономических рисков</p>
+                </div>
+                <div class="relative min-h-[320px] flex items-center justify-center">
+                    <canvas id="compRadarChart" class="max-w-[420px]"></canvas>
+                </div>
+            </div>
+
+            <!-- Риски КИПиА и Запчастей -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 lg:col-span-4 space-y-4 flex flex-col justify-between">
+                <div class="space-y-3">
+                    <h3 class="text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved text-emerald-400"></i> Ремонтопригодность кабины KAMA
+                    </h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Анализ зависимости турецкого покрасочного станка от импортных расходников и деталей в 2026 году:
+                    </p>
+                    
+                    <div class="space-y-3 pt-1">
+                        <div class="p-3 bg-slate-950/60 rounded border border-slate-800 text-sm">
+                            <strong class="text-white block mb-0.5">Фильтры и ремни:</strong>
+                            <p class="text-slate-400">Сухая кабина использует плоские картонные и стекловолоконные фильтры. Они легко производятся и поставляются российскими фирмами по доступной цене.</p>
+                        </div>
+                        <div class="p-3 bg-slate-950/60 rounded border border-slate-800 text-sm">
+                            <strong class="text-white block mb-0.5">Форсунки и пистолеты:</strong>
+                            <p class="text-slate-400">Краскопусты Binks AAA и их расходники доставляются без ограничений из Турции через официальных дилеров. В будущем возможен перевод на системы Wagner или Kremlin.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-slate-800 text-xs text-slate-500 font-mono">
+                    *Вся силовая электрика станка построена на Schneider и LS (Корея). Пневматика заменяется на STNC (Турция).
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Дорожная карта реализации -->
+        <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                    <span class="text-sky-400">4.</span> Поэтапная дорожная карта внедрения
+                </h3>
+                <p class="text-sm text-slate-400">График перехода к финальному комбинированному технологическому циклу</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+                <!-- Шаг 1 -->
+                <div class="p-5 bg-slate-950/60 rounded-xl border border-sky-500/20 space-y-2 relative">
+                    <div class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-sky-500 text-white font-black text-xs flex items-center justify-center shadow-lg">1</div>
+                    <span class="text-xs font-bold text-sky-400 uppercase tracking-widest block">Неделя 1-2 (Подготовка)</span>
+                    <h4 class="font-bold text-sm sm:text-base text-white">Заготовка грунта наливом</h4>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        За одну неделю до планируемого пуска распылительной камеры, с использованием имеющегося лаконалива заготовить достаточный объем панелей, загрунтованных с обеих сторон (запуск Варианта №1) для выполнения горящего заказа.
+                    </p>
+                </div>
+
+                <!-- Шаг 2 -->
+                <div class="p-5 bg-slate-950/60 rounded-xl border border-indigo-500/20 space-y-2 relative">
+                    <div class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-indigo-500 text-white font-black text-xs flex items-center justify-center shadow-lg">2</div>
+                    <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest block">Месяц 1-3 (Запуск)</span>
+                    <h4 class="font-bold text-sm sm:text-base text-white">Пуск KAMA и гибридный режим</h4>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Запуск автоматической кабины KAMA KR BM 1700 под финишное нанесение ПУ-эмали на ранее загрунтованные сухие ХЦП плиты. Параллельно продолжается грунтование новых панелей на лаконаливе под последующую эмаль.
+                    </p>
+                </div>
+
+                <!-- Шаг 3 -->
+                <div class="p-5 bg-emerald-500/5 rounded-xl border border-emerald-500/20 space-y-2 relative">
+                    <div class="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-emerald-500 text-white font-black text-xs flex items-center justify-center shadow-lg">3</div>
+                    <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest block">Перспектива (Оптимизация)</span>
+                    <h4 class="font-bold text-sm sm:text-base text-white">Переход на комбинированную УФ-схему</h4>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        После выполнения срочных контрактов дооснастить имеющийся вальцовый станок б/у камерой УФ-отверждения. Перевести грунтование тыльной стороны на экологически чистый безрастворительный УФ-грунт. Лицо и торцы полностью грунтовать и красить на распылении.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Подвал -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-8 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 space-y-2 text-sm">
+            <p>© 2026 ООО «ЗСМК». Проект комплексной модернизации лакокрасочной линии ХЦП.</p>
+            <p class="text-slate-600 font-mono">Документ составлен Главным технологом Фадеевым А.Ю. на основании выездных испытаний и лабораторных протоколов.</p>
+        </div>
+    </footer>
+
+    <!-- Логика интерактивного взаимодействия -->
+    <script>
+        let radarChart;
+
+        window.onload = function() {
+            // Инициализация Chart.js радара
+            const ctx = document.getElementById('compRadarChart').getContext('2d');
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Запчасти / ТО в РФ', 
+                        'Экономия бюджета (CAPEX)', 
+                        'Производительность подачи', 
+                        'Запас по механике (капремонт)', 
+                        'Современность электроники', 
+                        'Простота сервиса в РФ'
+                    ],
+                    datasets: [{
+                        label: 'Cefla ROC TRE W (2007) [18 млн руб]',
+                        data: [15, 10, 100, 75, 25, 30],
+                        fill: true,
+                        backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                        borderColor: 'rgb(244, 63, 94)',
+                        pointBackgroundColor: 'rgb(244, 63, 94)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(244, 63, 94)'
+                    }, {
+                        label: 'KAMA KR BM 1700 (2019) [~4.2 млн руб]',
+                        data: [95, 95, 75, 75, 85, 90],
+                        fill: true,
+                        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                        borderColor: 'rgb(16, 185, 129)',
+                        pointBackgroundColor: 'rgb(16, 185, 129)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(16, 185, 129)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#94a3b8',
+                                font: { size: 12, family: 'Inter' }
+                            },
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: '#334155' },
+                            grid: { color: '#1e293b' },
+                            pointLabels: {
+                                color: '#cbd5e1',
+                                font: { size: 12, family: 'Inter', weight: 'bold' }
+                            },
+                            ticks: {
+                                color: '#475569',
+                                backdropColor: 'transparent',
+                                stepSize: 25
+                            },
+                            min: 0,
+                            max: 100
+                        }
+                    }
+                }
+            });
+
+            // Запуск калькулятора при первой загрузке
+            runCalculator();
+        };
+
+        // Логика отображения хотспотов
+        function showHotspot(num) {
+            document.getElementById('hotspot-default').classList.add('hidden');
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById('hotspot-' + i).classList.add('hidden');
+            }
+            document.getElementById('hotspot-' + num).classList.remove('hidden');
+        }
+
+        // Логика работы слайдеров калькулятора выбора
+        function runCalculator() {
+            let parts = parseInt(document.getElementById('weight-parts').value);
+            let price = parseInt(document.getElementById('weight-price').value);
+            let speed = parseInt(document.getElementById('weight-speed').value);
+            let resource = parseInt(document.getElementById('weight-resource').value);
+
+            // Обновляем числовые индикаторы
+            document.getElementById('weight-parts-label').innerText = parts + '%';
+            document.getElementById('weight-price-label').innerText = price + '%';
+            document.getElementById('weight-speed-label').innerText = speed + '%';
+            document.getElementById('weight-resource-label').innerText = resource + '%';
+
+            let sum = parts + price + speed + resource;
+            if (sum === 0) {
+                parts = 25; price = 25; speed = 25; resource = 25;
+                sum = 100;
+            }
+
+            // Нормализуем веса
+            let wParts = parts / sum;
+            let wPrice = price / sum;
+            let wSpeed = speed / sum;
+            let wResource = resource / sum;
+
+            // Веса Станков (Cefla: запчасти=15, цена=10 (из-за 18 млн), скорость=100, ресурс=75)
+            let ceflaScore = Math.round((15 * wParts) + (10 * wPrice) + (100 * wSpeed) + (75 * wResource));
+            
+            // KAMA: запчасти=95, цена=95 (из-за 4.2 млн), скорость=75, resource=75
+            let kamaScore = Math.round((95 * wParts) + (95 * wPrice) + (75 * wSpeed) + (75 * wResource));
+
+            document.getElementById('calc-score-cefla').innerText = ceflaScore + '%';
+            document.getElementById('calc-score-kama').innerText = kamaScore + '%';
+
+            // Генерация выводов
+            let summary = "";
+            if (kamaScore > ceflaScore) {
+                if (wPrice > 0.3) {
+                    summary = "Из-за огромной разницы в цене (18 млн за Cefla против 4.2 млн за KAMA) турецкий станок является абсолютно доминирующим вариантом для закупки.";
+                } else if (wParts > 0.3) {
+                    summary = "KAMA KR BM 1700 рекомендуется к закупке. Стабильный турецкий логистический коридор исключает риски зависания запчастей на таможне.";
+                } else {
+                    summary = "KAMA KR BM 1700 — оптимальное инвестиционное решение по соотношению стоимости пусконаладки и стабильности обслуживания.";
+                }
+                document.getElementById('calc-score-kama').className = "text-3xl sm:text-4xl font-black text-emerald-400";
+                document.getElementById('calc-score-cefla').className = "text-xl sm:text-2xl font-black text-white/50";
+            } else {
+                summary = "Приоритет максимальной скорости подачи дает преимущество Cefla ROC TRE W. Обратите внимание: заложите дополнительный бюджет на закупку запасных плат ПЛК из Европы.";
+                document.getElementById('calc-score-cefla').className = "text-3xl sm:text-4xl font-black text-rose-400";
+                document.getElementById('calc-score-kama').className = "text-xl sm:text-2xl font-black text-white/50";
+            }
+            document.getElementById('calc-summary-text').innerText = summary;
+        }
+
+        // Интерактивное переключение технологических вариантов
+        function selectVariant(num) {
+            // Сбрасываем кнопки
+            for (let i = 1; i <= 3; i++) {
+                let btn = document.getElementById('btn-var-' + i);
+                btn.className = "px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all text-slate-400 hover:text-white";
+                document.getElementById('diagram-var-' + i).classList.add('hidden');
+            }
+
+            // Активируем выбранную кнопку
+            let activeBtn = document.getElementById('btn-var-' + num);
+            activeBtn.className = "px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all bg-sky-500 text-white shadow-lg";
+            document.getElementById('diagram-var-' + num).classList.remove('hidden');
+
+            // Текстовый контент для вывода
+            let pros = "";
+            let cons = "";
+            let perf = "";
+
+            if (num === 1) {
+                pros = "Высокий коэффициент переноса грунта на лицевую пласть. Опытным путем подтверждено, что эпоксидный грунт Novax не пенится и отлично наносится шторкой лаконалива.";
+                cons = "Торцы остаются без грунтовочного защитного слоя (сниженная влагостойкость плиты в условиях фасада). В баке наливной машины всегда сохраняется мертвый объем ЛКМ размером 20-30 л, что усложняет промывку при малых партиях.";
+                perf = "Высокая скорость грунтования лицевой пласти за один проход на лаконаливной машине. Нанесение финишной ПУ-эмали в распылительной камере KAMA обеспечивает укрытие кромок, потери на опыл составляют стандартные 15–30%.";
+            } else if (num === 2) {
+                pros = "Идеальное, герметичное и высокопрочное укрытие всех четырех торцов и пласти за один рабочий проход в распылительной камере. Полное отсутствие пузырей и дефектов на лицевом ПУ слое.";
+                cons = "Повышенный расход дорогостоящего грунта из-за факельного уноса мимо панели (потери 15–30% на обеих стадиях). Риск быстрого засорения сухих картонных фильтров липким эпоксидным грунтом.";
+                perf = "Производительность снижается: требуется организовывать три раздельных последовательных технологических прохода панелей через одну распылительную кабину.";
+            } else if (num === 3) {
+                pros = "УФ-грунт не содержит агрессивных растворителей, поэтому проблема деформации и набухания резины валов полностью отсутствует. Полная двусторонняя защита плиты по схеме Teknos. Мгновенное отверждение тыльного УФ-слоя за 2–3 секунды.";
+                cons = "Необходимость приобретения б/у камер УФ-отверждения для встраивания в линию сразу за вальцовым станком. Несколько более высокая стартовая цена жидких УФ-материалов.";
+                perf = "Оптимальный индустриальный баланс. Быстрая автоматическая сушка тыльной стороны компенсирует затраты времени на поочередное напыление лица, позволяя выпускать продукцию в промышленном объеме.";
+            }
+
+            document.getElementById('var-pros-text').innerText = pros;
+            document.getElementById('var-cons-text').innerText = cons;
+            document.getElementById('var-perf-text').innerText = perf;
+        }
+
+        // Скролл
+        function scrollToElement(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
